@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/gray"
+    app:cardBackgroundColor="@color/gray"
+    app:cardCornerRadius="17dp"
+    app:cardElevation="1dp"
+    app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/tv_RecordName"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="150dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:ellipsize="marquee"
+                android:scrollHorizontally="true"
+                tools:text="@string/text"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_RecordName"
+                tools:text="@string/date_of_record" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/image_button"
+                tools:text="@string/current_time_0_00" />
+
+            <ImageView
+                android:id="@+id/image_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/play_record_image"
+                android:padding="8dp"
+                tools:background="@drawable/ic_play" />
+        </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

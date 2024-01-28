@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AudionRecorder" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/new_blue</item>
+        <item name="colorPrimaryVariant">@color/new_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/new_blue</item>
+        <item name="colorSecondaryVariant">@color/new_blue</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/new_blue</item>
+    </style>
+</resources>
