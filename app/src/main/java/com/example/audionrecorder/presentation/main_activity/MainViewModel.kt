@@ -1,8 +1,6 @@
 package com.example.audionrecorder.presentation.main_activity
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.example.audionrecorder.data.RepositoryImpl
+import androidx.lifecycle.ViewModel
 import com.example.audionrecorder.domain.entities.ViewTypes
 import com.example.audionrecorder.domain.usecases.DeleteRecordUseCase
 import com.example.audionrecorder.domain.usecases.GetRecordListUseCase
@@ -11,13 +9,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+class MainViewModel @Inject constructor(
+    private val deleteRecordUseCase: DeleteRecordUseCase,
+    private val deleteFileUseCase: DeleteFileUseCase,
+    val recordList: GetRecordListUseCase
+): ViewModel() {
 
-    private val repository = RepositoryImpl(application)
-    private val deleteRecordUseCase = DeleteRecordUseCase(repository)
-    private val deleteFileUseCase = DeleteFileUseCase(repository)
-    val recordList = GetRecordListUseCase(repository)
     private val scope = CoroutineScope(Dispatchers.Default)
 
     fun deleteRecord(id: Int, path: String, type: Int) {

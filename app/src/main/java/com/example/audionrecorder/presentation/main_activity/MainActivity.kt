@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.audionrecorder.databinding.ActivityMainBinding
+import com.example.audionrecorder.presentation.RecordApplication
+import com.example.audionrecorder.presentation.ViewModelFactory
 import com.example.audionrecorder.presentation.adapter.RecordAdapter
 import com.example.audionrecorder.presentation.record_activity.RecordActivity
 import com.karumi.dexter.Dexter
@@ -16,6 +18,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +27,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recAdapter: RecordAdapter
     private var mediaPlayer = MediaPlayer()
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (application as RecordApplication).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         setupRV()
         askPermissions()
 
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.recordList.invoke().observe(this) {
             recAdapter.submitList(it)
         }

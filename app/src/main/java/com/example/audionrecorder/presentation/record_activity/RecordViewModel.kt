@@ -1,24 +1,25 @@
 package com.example.audionrecorder.presentation.record_activity
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.os.Environment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.audionrecorder.data.RepositoryImpl
+import androidx.lifecycle.ViewModel
 import com.example.audionrecorder.domain.entities.Record
 import com.example.audionrecorder.domain.usecases.AddRecordUseCase
 import com.example.audionrecorder.domain.usecases.usecases_file.AddFileUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import javax.inject.Inject
 
-class RecordViewModel(application: Application): AndroidViewModel(application) {
-
-    private val repository = RepositoryImpl(application)
-
-    private val addRecordUseCase = AddRecordUseCase(repository)
-    private val getPath = repository.getPath()
-    private val addFileUseCase = AddFileUseCase(repository)
+class RecordViewModel @Inject constructor(
+    private val addRecordUseCase: AddRecordUseCase,
+    private val addFileUseCase: AddFileUseCase
+): ViewModel() {
 
     private val scope = CoroutineScope(Dispatchers.Default)
 
@@ -39,8 +40,15 @@ class RecordViewModel(application: Application): AndroidViewModel(application) {
         }
     }
     fun getPath():String {
-        val path = parsePath(getPath)
-        if (path.isNotBlank()) return getPath
+        val format = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val date = format.format(Date())
+
+        val path: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
+        val file = File(path, "/recording_$date.arm")
+
+        val getPath = file.absolutePath
+        val parsePath = parsePath(getPath)
+        if (parsePath.isNotBlank()) return getPath
         else throw RuntimeException("path is blank")
     }
 

@@ -13,23 +13,35 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.audionrecorder.R
 import com.example.audionrecorder.databinding.ActivityRecordBinding
+import com.example.audionrecorder.presentation.RecordApplication
+import com.example.audionrecorder.presentation.ViewModelFactory
 import com.example.audionrecorder.presentation.main_activity.MainActivity
 import java.io.IOException
+import javax.inject.Inject
 
 class RecordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecordBinding
     private lateinit var viewModel: RecordViewModel
     private lateinit var path: String
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (application as RecordApplication).component
+    }
+
     private var isRecording = false
     private var recorder: MediaRecorder = MediaRecorder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
+
         super.onCreate(savedInstanceState)
         binding = ActivityRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[RecordViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[RecordViewModel::class.java]
 
         try {
             startRecording()
